@@ -105,8 +105,8 @@ To run this project locally, follow these steps:
 
 **John Apollos Olal**
 * Software Development Student (Flutter & Dart) at PLP
-* JohnApollos is my github username
-* apollos-digital.vercel.app
+* [GitHub Profile](https://github.com/JohnApollos)
+* [Portfolio](https://apollos-digital.vercel.app)
 
 ---
 
