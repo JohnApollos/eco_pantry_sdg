@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'screens/dashboard_screen.dart';
@@ -6,24 +7,37 @@ import 'services/theme_provider.dart';
 import 'services/notification_service.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  
-  final pantryProvider = PantryProvider();
-  await pantryProvider.init();
+  runZonedGuarded<Future<void>>(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    
+    // Set up global error handling for build phase errors
+    FlutterError.onError = (FlutterErrorDetails details) {
+      FlutterError.presentError(details);
+      // TODO: Log to crash reporting service (e.g. Sentry, Firebase Crashlytics)
+      debugPrint('Flutter Error: ${details.exception}');
+    };
 
-  final notificationService = NotificationService();
-  await notificationService.init();
-  await notificationService.scheduleDailyNotification();
+    final pantryProvider = PantryProvider();
+    await pantryProvider.init();
 
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => pantryProvider),
-        ChangeNotifierProvider(create: (_) => ThemeProvider()),
-      ],
-      child: const EcoPantryApp(),
-    ),
-  );
+    final notificationService = NotificationService();
+    await notificationService.init();
+    await notificationService.scheduleDailyNotification();
+
+    runApp(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => pantryProvider),
+          ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ],
+        child: const EcoPantryApp(),
+      ),
+    );
+  }, (error, stack) {
+    // TODO: Log to crash reporting service
+    debugPrint('Async Error: $error');
+    debugPrint('Stack Trace: $stack');
+  });
 }
 
 class EcoPantryApp extends StatelessWidget {

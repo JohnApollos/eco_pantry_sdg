@@ -3,12 +3,6 @@ import 'package:provider/provider.dart';
 import '../services/pantry_provider.dart';
 import '../widgets/pantry_item_tile.dart';
 import 'add_item_screen.dart';
-
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../services/pantry_provider.dart';
-import '../widgets/pantry_item_tile.dart';
-import 'add_item_screen.dart';
 import 'settings_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
